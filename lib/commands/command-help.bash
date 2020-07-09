@@ -21,19 +21,19 @@ asdf_extension_cmds() {
   # shellcheck disable=SC2012
   ext_cmds="$(ls -1 "$plugins_path"/*/lib/commands/command*.bash 2>/dev/null |
     sed "s#^$plugins_path/##;s#lib/commands/command##;s/.bash//;s/^-//;s/-/ /g")"
-      if test -n "$ext_cmds"; then
-        echo "$ext_cmds" | cut -d'/' -f 1 | uniq | while read -r plugin; do
-        echo
-        echo "PLUGIN $plugin"
-        echo "$ext_cmds" | grep "$plugin/" | sed "s#^$plugin/#  asdf $plugin#" | sort
-      done
-      fi
-    }
+  if test -n "$ext_cmds"; then
+    echo "$ext_cmds" | cut -d'/' -f 1 | uniq | while read -r plugin; do
+    echo
+    echo "PLUGIN $plugin"
+    echo "$ext_cmds" | grep "$plugin/" | sed "s#^$plugin/#  asdf $plugin#" | sort
+  done
+  fi
+}
 
-  help_command() {
-    local plugin_name="$1"
-    local tool_version="$2"
-    local plugin_path
+help_command() {
+  local plugin_name="$1"
+  local tool_version="$2"
+  local plugin_path
 
   # If plugin name is present as first argument output plugin help info
   if [ -n "$plugin_name" ]; then
@@ -54,7 +54,6 @@ asdf_extension_cmds() {
             if [ "${version_info[0]}" = "latest" ]; then
               local version
               version=$(asdf latest "$plugin_name" "${version_info[1]}")
-              full_version=$version
             else
               local version="${version_info[0]}"
             fi
